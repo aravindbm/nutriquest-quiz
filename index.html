@@ -3,83 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NutriQuest 2025 Prelims</title>
+    <title>NutriNCD QUEST 2025</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f9ff; margin: 0; padding: 20px; color: #333; }
-        .container { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h1 { color: #0066cc; text-align: center; }
-        .btn { display: block; width: 100%; padding: 12px; background: #0066cc; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; margin-top: 20px; }
-        .btn:hover { background: #005bb5; }
+        :root { --primary: #0066cc; --bg: #f4f7f6; --text: #333; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; }
+        
+        /* Layout */
+        .container { max-width: 600px; margin: 0 auto; background: white; min-height: 100vh; box-shadow: 0 0 15px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
+        .content-padding { padding: 25px; }
+
+        /* Header Styling */
+        .header-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; }
+        .flank-img { width: 50px; height: auto; object-fit: contain; }
+        
+        .title-text { font-size: 1.8rem; font-weight: 800; margin: 0; text-align: center; line-height: 1.2; }
+        .txt-nutri { color: #28a745; } /* Green */
+        .txt-ncd { color: #dc3545; }   /* Red */
+        .txt-quest { color: #007bff; } /* Blue */
+
+        .dept-logo-container { text-align: center; margin: 15px 0 25px 0; }
+        .dept-logo { width: 140px; height: auto; }
+
+        .sub-title { text-align: center; color: #666; font-size: 0.9rem; margin-bottom: 20px; font-weight: 600; }
+
+        /* Inputs & Buttons */
+        input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
+        .btn { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; }
+        .btn:disabled { background: #ccc; }
+
+        /* Timer - Sticky Header */
+        .timer-sticky { 
+            position: sticky; 
+            top: 0; 
+            background: #fff; 
+            padding: 15px; 
+            border-bottom: 3px solid var(--primary); 
+            z-index: 1000; 
+            text-align: center; 
+            font-weight: bold; 
+            color: #d9534f; 
+            font-size: 1.4rem; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        /* Questions */
+        .question-card { margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
+        .question-text { font-weight: 600; font-size: 1.1rem; margin-bottom: 15px; line-height: 1.4; }
+        .options label { display: flex; align-items: flex-start; padding: 10px; margin-bottom: 5px; background: #fafafa; border-radius: 6px; cursor: pointer; }
+        .options input { width: 20px; height: 20px; margin: 0 10px 0 0; flex-shrink: 0; }
+
         .hidden { display: none; }
-        input { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
-        .question-card { margin-bottom: 20px; padding: 15px; border-left: 4px solid #0066cc; background: #f9f9f9; }
-        .options label { display: block; padding: 8px; margin: 5px 0; background: #fff; border: 1px solid #eee; cursor: pointer; border-radius: 4px; }
-        .options input { width: auto; margin-right: 10px; }
-        .timer { font-size: 1.2em; font-weight: bold; color: #d9534f; text-align: center; margin-bottom: 15px; }
     </style>
 </head>
 <body>
 
-<div class="container" id="welcomeScreen">
-    <h1>NutriQuest 2025</h1>
-    <p><strong>30th AP State Joint IAPSM & IPHA Conference</strong><br>Andhra Medical College, Visakhapatnam</p>
-    <hr>
-    <h3>Rules:</h3>
-    <ul>
-        <li>15 Questions | 1 Mark Each | No Negative Marking</li>
-        <li>Top 6 scorers proceed to Finals (Dec 13th).</li>
-        <li><strong>Tie Breaker:</strong> Fastest submission time wins.</li>
-    </ul>
-    <div id="registrationForm">
-        <input type="text" id="fullName" placeholder="Full Name (Dr. ...)" required>
-        <input type="text" id="collegeName" placeholder="College Name" required>
-        <input type="email" id="emailId" placeholder="Email ID" required>
-        <input type="text" id="passkey" placeholder="Enter Passkey" required>
-        <button class="btn" onclick="startQuiz()">Start Quiz</button>
+<div class="container" id="screen-welcome">
+    <div class="content-padding">
+        <div class="header-row">
+            <img src="Nutrition.png" alt="Nutri" class="flank-img">
+            <h1 class="title-text">
+                <span class="txt-nutri">Nutri</span><span class="txt-ncd">NCD</span> <span class="txt-quest">QUEST</span>
+            </h1>
+            <img src="NCDs.png" alt="NCD" class="flank-img">
+        </div>
+
+        <div class="sub-title">30th AP State Joint IAPSM & IPHA Conference<br>Andhra Medical College, Visakhapatnam.</div>
+
+        <div class="dept-logo-container">
+            <img src="SPM_AMC_LOGO.png" alt="Department Logo" class="dept-logo">
+        </div>
+        
+        <div style="background: #eef5fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 0.9rem;">
+            <strong>Rules:</strong>
+            <ul style="padding-left: 20px; margin: 5px 0;">
+                <li>15 Questions | No Negative Marks</li>
+                <li>Tie-Breaker: Fastest Time</li>
+                <li>Top 6 Qualify for the Finals</li>
+            </ul>
+        </div>
+
+        <form onsubmit="event.preventDefault(); startQuiz();">
+            <input type="text" id="fname" placeholder="Full Name" required>
+            <input type="text" id="cname" placeholder="College Name" required>
+            <input type="email" id="email" placeholder="Email Address" required>
+            <input type="text" id="passkey" placeholder="Passkey" autocomplete="off" required>
+            <button class="btn" type="submit">Start Quiz</button>
+        </form>
     </div>
 </div>
 
-<div class="container hidden" id="quizScreen">
-    <div class="timer" id="timerDisplay">Time: 0s</div>
-    <div id="questionsContainer"></div>
-    <button class="btn" onclick="submitQuiz()">Submit Answers</button>
+<div class="container hidden" id="screen-quiz">
+    <div class="timer-sticky" id="timer">00:00</div>
+    
+    <div class="content-padding">
+        <div id="quiz-content"></div>
+        <button class="btn" onclick="submitQuiz()" id="submitBtn">Submit Assessment</button>
+    </div>
 </div>
 
-<div class="container hidden" id="resultScreen">
-    <h1>Assessment Complete!</h1>
-    <p>Your responses have been recorded.</p>
-    <p>Check your email for your score and the answer key.</p>
-    <p><strong>Good luck for the Top 6!</strong></p>
+<div class="container hidden" id="screen-result">
+    <div class="content-padding" style="text-align: center; margin-top: 40px;">
+        <h1 style="color: #28a745; font-size: 3rem;">✔</h1>
+        <h2>Submitted Successfully!</h2>
+        <p>Your responses have been recorded.</p>
+        <p>Please check your email for your Score and the Answer Key.</p>
+        <hr style="margin: 30px 0; border: 0; border-top: 1px solid #eee;">
+        <p style="color: #999; font-size: 0.8rem;">Department of Community Medicine<br>Andhra Medical College</p>
+    </div>
 </div>
 
 <script>
-    // CONFIGURATION
-    const PASSKEY = "AMC2025"; // Set your desired passkey here
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx6S-1Q7s62c0Yl15xPBXiNYbbC4UZyg0YxBoR0AJdJu_GTGsI5otc5pwKHZ_WV58BGiQ/exec"; 
+    // --- CONFIGURATION ---
+    const CORRECT_PASSKEY = "AMC2025"; 
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx6S-1Q7s62c0Yl15xPBXiNYbbC4UZyg0YxBoR0AJdJu_GTGsI5otc5pwKHZ_WV58BGiQ/exec"; // <--- PASTE YOUR URL HERE
 
-    // QUESTION DATA (Extracted from PDF)
-    const questionsDB = [
-        { q: "According to ICMR-NIN 2024, what is the age bracket for the 'Reference Indian Adult'?", options: ["19-39 years", "18-29 years", "25-45 years", "20-49 years"], correct: "19-39 years" },
-        { q: "WHO 2023 guidelines on Non-Sugar Sweeteners (NSS) recommend against their use for weight control. Which is an NSS?", options: ["Stevia and its derivatives", "Medicinal syrups", "Sugar alcohols (Polyols)", "Low-calorie sugars"], correct: "Stevia and its derivatives" },
-        { q: "Which NOVA food classification category is most strongly associated with obesity and metabolic syndrome?", options: ["Group 4: Ultra-processed foods", "Group 1: Unprocessed foods", "Group 3: Processed foods", "Group 2: Processed ingredients"], correct: "Group 4: Ultra-processed foods" },
-        { q: "ICMR-NIN 2024 recommendation regarding protein powders for general adults to build muscle mass?", options: ["Avoided; associated with bone mineral loss and kidney damage", "Safe up to 2.0g/kg/day", "Recommended to meet RDA", "Recommended only for vegetarians"], correct: "Avoided; associated with bone mineral loss and kidney damage" },
-        { q: "Which study design is most prone to 'Reverse Causality' in nutritional epidemiology?", options: ["Cross-sectional Study", "Prospective Cohort Study", "Randomized Controlled Trial", "Ecological Study"], correct: "Cross-sectional Study" },
-        { q: "Which fatty acid profile change is most effective in reducing LDL cholesterol?", options: ["Replacing SFA with PUFA", "Increasing MCTs", "Replacing SFA with Carbs", "Replacing Trans fats with SFA"], correct: "Replacing SFA with PUFA" },
-        { q: "What is the correct formula for Glycemic Load (GL)?", options: ["(Glycemic Index x Carbohydrate (g)) / 100", "Glycemic Index x Fiber (g)", "(Carbohydrate / GI) x 100", "(GI x Food Weight) / 100"], correct: "(Glycemic Index x Carbohydrate (g)) / 100" },
-        { q: "What is the primary characteristic of the protein source in the EAT-Lancet 'Planetary Health Diet'?", options: ["Predominantly plant-based proteins", "Exclusive veganism", "High reliance on dairy/eggs", "Processed soy isolates"], correct: "Predominantly plant-based proteins" },
-        { q: "Which anthropometric indicator is suggested by the Ashwell Shape Chart?", options: ["Waist-to-Height Ratio (WHtR)", "Waist-to-Hip Ratio (WHR)", "MUAC", "BMI"], correct: "Waist-to-Height Ratio (WHtR)" },
-        { q: "NIN 2024 recommended daily fiber intake for an adult man?", options: ["25-30 g/day", "50-60 g/day", "10 g/day", "15-20 g/day"], correct: "25-30 g/day" },
-        { q: "Which FOPL system uses a graded summary indicator (colors and letters A-E)?", options: ["Nutri-Score", "Multiple Traffic Light", "GDA", "Warning Labels"], correct: "Nutri-Score" },
-        { q: "Deficiency of which triad of vitamins causes hyperhomocysteinemia?", options: ["Folic Acid, Vitamin B12, Vitamin B6", "Vitamin A, D, E", "Thiamine, Riboflavin, Niacin", "Vitamin C, E, Selenium"], correct: "Folic Acid, Vitamin B12, Vitamin B6" },
-        { q: "Besides reducing Sodium, which minerals are increased in the DASH diet?", options: ["Potassium, Magnesium, Calcium", "Phosphorus, Sulfur, Chloride", "Selenium, Iodine, Chromium", "Iron, Zinc, Copper"], correct: "Potassium, Magnesium, Calcium" },
-        { q: "Standard method for assessing 'Long-term/Habitual' dietary intake?", options: ["Food Frequency Questionnaire (FFQ)", "Biomarkers", "Weighed Food Record", "24-Hour Recall"], correct: "Food Frequency Questionnaire (FFQ)" },
-        { q: "WHO 'REPLACE' target limit for industrially-produced Trans-Fatty Acids?", options: ["Less than 2 g per 100 g of total fat", "Less than 5% of total fat", "Less than 10% of energy", "Zero detection"], correct: "Less than 2 g per 100 g of total fat" }
+    // --- QUESTION DB ---
+    const db = [
+        { q: "According to ICMR-NIN 2024, which age bracket defines the 'Reference Indian Adult'?", opts: ["19-39 years", "18-29 years", "25-45 years", "20-49 years"], ans: "19-39 years" },
+        { q: "The WHO 2023 guideline on Non-Sugar Sweeteners (NSS) recommends against their use for weight control. Which is an NSS?", opts: ["Medicinal syrups", "Stevia and its derivatives", "Sugar alcohols (Polyols)", "Low-calorie sugars"], ans: "Stevia and its derivatives" },
+        { q: "Which NOVA food classification category is most strongly associated with obesity and metabolic syndrome?", opts: ["Group 1: Unprocessed foods", "Group 3: Processed foods", "Group 4: Ultra-processed foods", "Group 2: Culinary ingredients"], ans: "Group 4: Ultra-processed foods" },
+        { q: "Per ICMR-NIN 2024, what is the recommendation regarding protein powders for the general adult population?", opts: ["Safe up to 2.0g/kg/day", "Recommended to meet RDA", "Avoided; associated with renal/bone issues", "Recommended only for vegetarians"], ans: "Avoided; associated with renal/bone issues" },
+        { q: "Which study design is most prone to 'Reverse Causality' when assessing diet and chronic disease?", opts: ["Prospective Cohort Study", "Cross-sectional Study", "Randomized Controlled Trial", "Ecological Study"], ans: "Cross-sectional Study" },
+        { q: "Which fatty acid profile change is most effective in reducing LDL cholesterol?", opts: ["Increasing MCTs", "Replacing SFA with PUFA", "Replacing SFA with Carbohydrates", "Replacing Trans fats with SFA"], ans: "Replacing SFA with PUFA" },
+        { q: "What is the correct formula for Glycemic Load (GL)?", opts: ["(Glycemic Index x Carbohydrate (g)) / 100", "Glycemic Index x Dietary Fiber", "(Carbohydrate / GI) x 100", "(GI x Total Food Weight) / 100"], ans: "(Glycemic Index x Carbohydrate (g)) / 100" },
+        { q: "What is the primary characteristic of the protein source in the EAT-Lancet 'Planetary Health Diet'?", opts: ["Exclusive veganism", "High reliance on dairy/eggs", "Predominantly plant-based proteins", "Processed soy isolates"], ans: "Predominantly plant-based proteins" },
+        { q: "Which anthropometric indicator is suggested by the Ashwell Shape Chart?", opts: ["Waist-to-Hip Ratio (WHR)", "Mid-Upper Arm Circumference", "Body Mass Index", "Waist-to-Height Ratio (WHtR)"], ans: "Waist-to-Height Ratio (WHtR)" },
+        { q: "What is the NIN recommended daily dietary fiber intake for an adult man?", opts: ["50-60 g/day", "10 g/day", "25-30 g/day", "15-20 g/day"], ans: "25-30 g/day" },
+        { q: "Which FOPL system uses a graded summary indicator (colors and letters) to rank nutritional quality?", opts: ["Multiple Traffic Light", "Nutri-Score", "GDA", "Warning Labels"], ans: "Nutri-Score" },
+        { q: "Deficiency of which triad of vitamins is primarily responsible for hyperhomocysteinemia?", opts: ["Folic Acid, Vitamin B12, Vitamin B6", "Vitamin A, Vitamin D, Vitamin E", "Thiamine, Riboflavin, Niacin", "Vitamin C, Vitamin E, Selenium"], ans: "Folic Acid, Vitamin B12, Vitamin B6" },
+        { q: "Besides reducing Sodium, which minerals are increased in the DASH diet?", opts: ["Potassium, Magnesium, Calcium", "Phosphorus, Sulfur, Chloride", "Selenium, Iodine, Chromium", "Iron, Zinc, Copper"], ans: "Potassium, Magnesium, Calcium" },
+        { q: "Which method is the standard for assessing 'Long-term/Habitual' dietary intake in epidemiology?", opts: ["Biomarkers", "Weighed Food Record", "Food Frequency Questionnaire (FFQ)", "24-Hour Recall"], ans: "Food Frequency Questionnaire (FFQ)" },
+        { q: "What is the WHO 'REPLACE' target limit for industrially-produced Trans-Fatty Acids (iTFA)?", opts: ["Less than 5% of total fat", "Less than 10% of total energy", "Zero detection", "Less than 2 g per 100 g of total fat"], ans: "Less than 2 g per 100 g of total fat" }
     ];
 
-    let startTime, timerInterval;
-    let shuffledQuestions = [];
+    let questions = [];
+    let startTime;
+    let timerInt;
 
-    // FISHER-YATES SHUFFLE
     function shuffle(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -88,91 +148,82 @@
         return array;
     }
 
-    function startQuiz() {
-        const name = document.getElementById('fullName').value;
-        const college = document.getElementById('collegeName').value;
-        const email = document.getElementById('emailId').value;
-        const key = document.getElementById('passkey').value;
-
-        if (!name || !college || !email || !key) { alert("Please fill all details."); return; }
-        if (key !== PASSKEY) { alert("Invalid Passkey!"); return; }
-
-        document.getElementById('welcomeScreen').classList.add('hidden');
-        document.getElementById('quizScreen').classList.remove('hidden');
-
-        // Randomize Questions
-        shuffledQuestions = shuffle([...questionsDB]);
-        renderQuestions();
-
-        startTime = new Date();
-        timerInterval = setInterval(() => {
-            const now = new Date();
-            const diff = Math.floor((now - startTime) / 1000);
-            document.getElementById('timerDisplay').innerText = `Time: ${diff}s`;
-        }, 1000);
+    function formatTime(totalSeconds) {
+        const m = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
+        const s = (totalSeconds % 60).toString().padStart(2, '0');
+        return `${m}:${s}`;
     }
 
-    function renderQuestions() {
-        const container = document.getElementById('questionsContainer');
-        container.innerHTML = "";
+    function startQuiz() {
+        if(document.getElementById('passkey').value !== CORRECT_PASSKEY) { alert("Incorrect Passkey!"); return; }
+
+        document.getElementById('screen-welcome').classList.add('hidden');
+        document.getElementById('screen-quiz').classList.remove('hidden');
+
+        questions = shuffle([...db]);
+        const container = document.getElementById('quiz-content');
         
-        shuffledQuestions.forEach((qObj, index) => {
-            // Shuffle Options
-            const opts = shuffle([...qObj.options]);
-            
-            let html = `<div class="question-card">
-                <p><strong>Q${index + 1}.</strong> ${qObj.q}</p>
-                <div class="options">`;
-            
-            opts.forEach(opt => {
-                html += `<label><input type="radio" name="q${index}" value="${opt}"> ${opt}</label>`;
-            });
-            
-            html += `</div></div>`;
-            container.innerHTML += html;
+        questions.forEach((item, idx) => {
+            let opts = shuffle([...item.opts]);
+            let html = `
+            <div class="question-card">
+                <div class="question-text">Q${idx+1}. ${item.q}</div>
+                <div class="options">
+                    ${opts.map(o => `<label><input type="radio" name="q${idx}" value="${o}"> ${o}</label>`).join('')}
+                </div>
+            </div>`;
+            container.insertAdjacentHTML('beforeend', html);
         });
+
+        startTime = new Date();
+        timerInt = setInterval(() => {
+            let elapsed = Math.floor((new Date() - startTime)/1000);
+            document.getElementById('timer').innerText = formatTime(elapsed);
+        }, 1000);
+        
+        window.scrollTo(0,0);
     }
 
     function submitQuiz() {
-        clearInterval(timerInterval);
+        clearInterval(timerInt);
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.disabled = true;
+        submitBtn.innerText = "Submitting...";
+        
         const endTime = new Date();
-        const timeTaken = (endTime - startTime) / 1000;
+        const timeTaken = Math.floor((endTime - startTime)/1000);
         
         let score = 0;
         let answers = [];
-
-        // Calculate Score
-        shuffledQuestions.forEach((qObj, index) => {
-            const selected = document.querySelector(`input[name="q${index}"]:checked`);
-            const answer = selected ? selected.value : "Not Answered";
-            if (answer === qObj.correct) score++;
-            answers.push({ q: qObj.q, ans: answer });
+        
+        questions.forEach((item, idx) => {
+            const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+            const val = selected ? selected.value : "Not Answered";
+            if(val === item.ans) score++;
+            answers.push({ q: item.q, yourAns: val, correct: item.ans });
         });
 
-        // Send to Google Sheet
-        const data = {
-            name: document.getElementById('fullName').value,
-            college: document.getElementById('collegeName').value,
-            email: document.getElementById('emailId').value,
+        const payload = {
+            name: document.getElementById('fname').value,
+            college: document.getElementById('cname').value,
+            email: document.getElementById('email').value,
             score: score,
-            timeTaken: timeTaken,
+            timeTaken: timeTaken, // Sending raw seconds for easy sorting in Excel
             answers: answers
         };
-
-        const btn = document.querySelector('button[onclick="submitQuiz()"]');
-        btn.innerText = "Submitting...";
-        btn.disabled = true;
 
         fetch(SCRIPT_URL, {
             method: 'POST',
             mode: 'no-cors',
-            body: JSON.stringify(data)
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
         }).then(() => {
-            document.getElementById('quizScreen').classList.add('hidden');
-            document.getElementById('resultScreen').classList.remove('hidden');
-        }).catch(err => {
-            alert("Error submitting. Please check connection.");
-            console.error(err);
+            document.getElementById('screen-quiz').classList.add('hidden');
+            document.getElementById('screen-result').classList.remove('hidden');
+        }).catch(e => {
+            alert("Error submitting. Please check your internet connection.");
+            submitBtn.disabled = false;
+            submitBtn.innerText = "Submit Assessment";
         });
     }
 </script>
